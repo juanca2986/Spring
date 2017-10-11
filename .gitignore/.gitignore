@@ -1,0 +1,45 @@
+<html>
+<body>
+<!-- BEGIN Comm100 Live Chat Button Code --><a href="http://www.comm100.com/livechat" target="_blank" onclick="comm100_132255.openChatWindow(event,1309,-1);return false;"><img style="border:0px" id="comm100_ButtonImage" src="https://chatserver.comm100.com/BBS.aspx?siteId=132255&amp;planId=1309&amp;partnerId=-1"></img></a><script src="https://chatserver.comm100.com/js/LiveChat.js?siteId=132255&amp;planId=1309&amp;partnerId=-1" type="text/javascript"></script><!-- End Comm100 Live Chat Button Code -->
+<a href='http://hosted.comm100.com/KnowledgeBase/?SiteId=132255' target='_self' title=''><img alt='' src='' style='border:0; cursor:pointer;'/></a>
+<?php
+require('routeros_api.class.php');
+echo "<form action='ejemplo.php' method=POST><table border=1>";
+echo "<tr><td><input type=text name=user id=user><input type=submit></td><td>";
+echo "perfil:<select name=lista>";
+$API = new routeros_api();
+$API->debug = false;
+if ($API->connect('200.13.152.7', 'jcgalean', '295807660')) {
+//if ($API->connect('200.13.152.14', 'admin', '20iYHN.-')) {
+$API->write('/ppp/profile/print',false);
+$API->write('=.proplist=.id,name');
+$READ = $API->read(false);
+$ARRAY = $API->parse_response($READ);
+//$te=$ARRAY[0]['.id'];
+print_r($ARRAY);
+
+
+$API->disconnect();
+
+}
+else{
+echo "algo paso";
+}
+for ($i=0; $i<count($ARRAY); $i++){
+echo "<option value=".$ARRAY[$i]['.id'].">".$ARRAY[$i]['name']."</option>";
+}
+echo"</select></td></tr></table></form>";
+?>
+<br>
+DESHABILITAR
+<form action='remotas2.php' name='users' method='POST'>
+<textarea name='usuarios' id='usuarios' rows=14 cols=20></textarea><br>
+<?
+date_default_timezone_set('America/Caracas');
+?>
+comentario:<br><input type=text value='<?php echo 'Mora '.date("d/m/Y G:i:s");?>'  name='comentario'><br>
+<input type=submit value='Proceder'>
+</form>
+<a href='http://hosted.comm100.com/KnowledgeBase/?SiteId=132255' target='_self' title=''><img alt='' src='' style='border:0; cursor:pointer;'/></a>
+</body>
+</html>
